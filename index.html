@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Chart Development</title>
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	</head>
+	<body>
+        <div class="row">
+            <div class="col-1 col-md-3">
+            </div>
+            <div class="col-10 col-md-6">
+                <span>Chart Development</span>
+                <form>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Choose Dataset</label>
+                        <input type="file" class="form-control-file" id="changeFile">
+                    </div>
+                </form>
+                <div id="component" width="500" height="300"></div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Action JSON</label>
+                    <textarea class="form-control" id="actionText" rows="3"></textarea>
+                </div>
+                <button onclick="mappingTemplate()" type="button" class="btn btn-outline-secondary">Mapping Template</button>
+                <button onclick="otherTemplate()" type="button" class="btn btn-outline-secondary">Action Template</button>
+                <button onclick="takeAction()" type="button" class="btn btn-outline-primary">Take Action</button>
+                <footer>&copy; 2019 smartvis</footer>
+            </div>
+            <div class="col-1 col-md-3"></div>
+        </div>
+        
+    </body>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/popper.js/dist/umd/popper.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.min.js"></script>
+    <script src="js/vis.js"></script>
+    <script src="charts/linechart.js"></script>
+    <script src="charts/scatterplotMatrix.js"></script>
+
+    <script>
+        var component = linechart(); // change charts for develop
+        console.log(component)
+        component.container("#component");
+        d3.select("#changeFile")
+            .attr("type","file")
+            .on("change", handleFileSelect)
+
+        function mappingTemplate() {
+            let json = {
+                "taxonomy": "Visual Exploration",
+                "type": "Mapping",
+                "parameters": {
+                    "operation": "Add",
+                    "slot": "X",
+                    "dimension": "rating"
+                }
+            };
+            document.getElementById('actionText').value = JSON.stringify(json);
+        }
+        
+        function otherTemplate() {
+            let json = {
+                "taxonomy": "Visual Exploration",
+                "type": "",
+                "parameters": {
+                    
+                }
+            };
+            document.getElementById('actionText').value = JSON.stringify(json);
+        }
+
+        function takeAction() {
+           try {
+                var actionJsonText = document.getElementById('actionText').value; 
+                var actionJson = JSON.parse(actionJsonText)
+                console.log(component.operate(actionJson));
+                console.log(actionJsonText);
+            } catch(error) {
+                console.log("error in action");
+                console.log(error);
+            }
+        }
+
+        function handleFileSelect() {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                // File APIs are supported.
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+
+            var f = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                load_d3(event.target.result)
+            };
+            reader.readAsDataURL(f);
+        }
+
+        function load_d3(fileHandler) {
+            d3.csv(fileHandler, function(csvdata) {
+                var dimen = vis.initDimensions(csvdata);
+                component
+                    .data([csvdata])
+                    .dimensions(dimen)
+                    //.layout()
+                    .render();
+            })
+        };
+    </script>
+</html>

@@ -1,0 +1,29 @@
+{
+    "name": "vis",
+    "homepage": "https://github.com/sdq/vis",
+    "authors": [
+        "sdq"
+    ],
+    "description": "chart development tutorial",
+    "main": "index.html",
+    "keywords": [
+        "vis"
+    ],
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "d3": "4.13.0",
+        "jquery": "^3.3.1",
+        "bootstrap": "^4.1.3",
+        "popper.js": "^1.14.6",
+        "webcola": "^3.3.8"
+    }
+}
+  
