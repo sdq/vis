@@ -280,3 +280,20 @@ vis.eventHandle = function(eventProxy, json){
     // used in system
     // eventProxy.dispatchAction(json.type, json);
 }
+
+vis.map2json = function(m) {
+    let str = '{';
+    let i = 1;
+    m.forEach(function (items, key, mapObj) {
+        str += '"' + key + '":[';
+        items.forEach(function (item, index) {
+            str += '"' + item + '"';
+            if (index < items.length - 1) str += ',';
+        })
+        str += ']';
+        if (mapObj.size != i) str += ',';
+        i++;
+    })
+    str += '}';
+    return str;
+}
