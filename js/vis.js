@@ -55,7 +55,7 @@ vis.dimension = function(_name, _dataType, _extent) {
     return dimension;
 };
 
-vis.slot = function(_name, _description, _dataTypes, _isMultiple, _isRequired, _isSorted) {
+vis.slot = function(_name, _description, _dataTypes, _isMultiple, _isRequired) {
 
     let slot = new Object(),
         name = _name || "",
@@ -92,12 +92,6 @@ vis.slot = function(_name, _description, _dataTypes, _isMultiple, _isRequired, _
     slot.isRequired = function(_) {
         if (!arguments.length) return isRequired;
         isRequired = _;
-        return slot;
-    };
-
-    slot.isSorted = function(_) {
-        if (!arguments.length) return isSorted;
-        isSorted = _;
         return slot;
     };
 

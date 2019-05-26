@@ -16,7 +16,7 @@ let linechart = function (eventProxy) {
         slots = {
             'X': vis.slot().name('X').description('X value').isRequired(true),
             'Y': vis.slot().name('Y').description('Y value').isRequired(true),
-            'Color': vis.slot().name("Color").description("node color").dataTypes(["Categorical"]),
+            'Color': vis.slot().name("Color").description("line color").dataTypes(["Categorical"]),
             "Tooltip": vis.slot().name('Tooltip').description('Tooltip value').isMultiple(true).dataTypes(["Categorical", "Numerical"])
         },
         mappings = new Map(),
@@ -109,11 +109,14 @@ let linechart = function (eventProxy) {
         if (!arguments.length) return mappings;
         let newMappings = _;
                 
+        // for properties
         let oldX = mappings.get("X"),
             newX = newMappings["X"];
         if ( oldX && oldX.length &&( !newX || !newX.length ||(newX[0] !== oldX[0]))) {
             properties.domain = null;
         }
+
+        // new mapping
         mappings.clear();
         for (let fieldName in newMappings) {
             if (newMappings.hasOwnProperty(fieldName)) {
@@ -606,11 +609,9 @@ let linechart = function (eventProxy) {
             return snapshot();
         },
         'Save': function (parameters) {
-            // Save
             return saveState();
         },
         'Bookmark': function (parameters) {
-            // Bookmark
             return saveState(parameters.note);
         }
     }

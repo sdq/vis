@@ -25,12 +25,6 @@ let template = function (eventProxy) {
     let color = d3.scaleOrdinal(vis.colorCategory12a); //TODO: color
     let dispatch = d3.dispatch('zoom', 'pan');
 
-    template.margin = function (_) {
-        if (!arguments.length) return margin;
-        margin = _;
-        return template;
-    };
-
     template.container = function (_) {
         if (!arguments.length) return container;
         container = d3.select(_);
