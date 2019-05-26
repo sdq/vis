@@ -68,6 +68,13 @@ let linechart = function (eventProxy) {
         return isRendered;
     }
 
+    let dispatch = d3.dispatch('zoom', 'pan');
+
+    linechart.layout = function () {
+        // layout
+        return linechart;
+    };
+
     linechart.render = function() {
         if (!container) {
             return;
@@ -100,46 +107,6 @@ let linechart = function (eventProxy) {
         else return linechart;
     };
 
-    linechart.layout = function () {
-        // layout
-        return linechart;
-    };
-
-    linechart.mapping = function (_) {
-        if (!arguments.length) return mappings;
-        let newMappings = _;
-                
-        // for properties
-        let oldX = mappings.get("X"),
-            newX = newMappings["X"];
-        if ( oldX && oldX.length &&( !newX || !newX.length ||(newX[0] !== oldX[0]))) {
-            properties.domain = null;
-        }
-
-        // new mapping
-        mappings.clear();
-        for (let fieldName in newMappings) {
-            if (newMappings.hasOwnProperty(fieldName)) {
-                mappings.set(fieldName, newMappings[fieldName]);
-            }
-        }
-        return linechart;
-    };
-
-    linechart.properties = function(_) {
-        if (!arguments.length) return properties;
-        properties = _;
-        return linechart;
-    };
-
-    linechart.save = function() {
-        let copyProperties = vis.clone(properties);
-        return {
-            "properties": copyProperties
-        }
-    };
-
-    let dispatch = d3.dispatch('zoom', 'pan');
     linechart.update = function () {
         clearCanvas();
 
@@ -531,6 +498,40 @@ let linechart = function (eventProxy) {
 
         return linechart;
     }
+
+    linechart.mapping = function (_) {
+        if (!arguments.length) return mappings;
+        let newMappings = _;
+                
+        // for properties
+        let oldX = mappings.get("X"),
+            newX = newMappings["X"];
+        if ( oldX && oldX.length &&( !newX || !newX.length ||(newX[0] !== oldX[0]))) {
+            properties.domain = null;
+        }
+
+        // new mapping
+        mappings.clear();
+        for (let fieldName in newMappings) {
+            if (newMappings.hasOwnProperty(fieldName)) {
+                mappings.set(fieldName, newMappings[fieldName]);
+            }
+        }
+        return linechart;
+    };
+
+    linechart.properties = function(_) {
+        if (!arguments.length) return properties;
+        properties = _;
+        return linechart;
+    };
+
+    linechart.save = function() {
+        let copyProperties = vis.clone(properties);
+        return {
+            "properties": copyProperties
+        }
+    };
 
     linechart.clear = function (json) {
         if (container) {
